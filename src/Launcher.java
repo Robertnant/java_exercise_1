@@ -12,7 +12,7 @@ public class Launcher {
         System.out.println("Welcome people!");
 
         // List of different available commands
-        List<Command> commands = List.of(new Quit(), new Freq(), new Fibo());
+        List<Command> commands = List.of(new Quit(), new Freq(), new Fibo(), new Predict());
 
         while (true) {
             // Get command from user and find in available commands list
