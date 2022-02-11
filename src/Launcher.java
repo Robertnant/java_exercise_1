@@ -1,8 +1,5 @@
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.function.Function;
@@ -26,7 +23,7 @@ public class Launcher {
                     input = scanner.nextLine();
 
                     try {
-                        String content = Files.readString(Paths.get(input));
+                        String content = Files.readString(Paths.get(input)).toLowerCase(Locale.ROOT);
                         String[] tokens = content.split(" ");
                         Map<String, Long> elements = Arrays.stream(tokens)
                                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
