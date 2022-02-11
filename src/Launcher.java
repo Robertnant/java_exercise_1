@@ -34,7 +34,11 @@ public class Launcher {
                         var result = elements.entrySet()
                                 .stream()
                                 .sorted(Comparator.comparing(Map.Entry<String, Long>::getValue)).limit(3);
-                        result.forEach(element -> System.out.println(element.getKey()));
+                        var resultArray = result.toList();
+                        for (int i = 0; i < resultArray.size() - 1; i++) {
+                            System.out.print(resultArray.get(i).getKey() + " ");
+                        }
+                        System.out.println(resultArray.get(resultArray.size() - 1).getKey());
                     }
                     catch (IOException e) {
                         System.out.println("Unreadable file: ");
