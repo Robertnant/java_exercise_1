@@ -33,7 +33,7 @@ public class Launcher {
 
                         var result = elements.entrySet()
                                 .stream()
-                                .sorted(Comparator.comparing(Map.Entry<String, Long>::getValue)).limit(3);
+                                .sorted(Comparator.comparing(Map.Entry<String, Long>::getValue).reversed()).limit(3);
                         var resultArray = result.toList();
                         for (int i = 0; i < resultArray.size() - 1; i++) {
                             System.out.print(resultArray.get(i).getKey() + " ");
