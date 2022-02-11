@@ -11,6 +11,27 @@ public class Predict implements Command {
         return "predict";
     }
 
+    private String findCombination(String element, String[] tokens, int index) {
+        List<String> combinations = new ArrayList<>();
+        for (int i = index; i < tokens.length; i++) {
+            if (element.equals(tokens[i]) && i + 1 < tokens.length) {
+                combinations.add(tokens[i + 1]);
+            }
+        }
+
+        if (combinations.size() == 0) {
+            return null;
+        }
+
+        Map<String, Long> elements = combinations.stream()
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+        var sorted = elements.entrySet()
+                .stream()
+                .sorted(Comparator.comparing(Map.Entry<String, Long>::getValue).reversed()).limit(1);
+        return sorted.toList().get(0).getKey();
+    }
+
     @Override
     public boolean run(Scanner scanner) {
         System.out.println("Predict: please enter a file path");
@@ -22,15 +43,9 @@ public class Predict implements Command {
             String[] tokens = content.split(" ");
 
             for (int i = 0; i < tokens.length; i++) {
-                String[] subtokens = Arrays.copyOfRange(tokens, i, tokens.length);
-                Map<String, Long> elements = Arrays.stream(subtokens)
-                        .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
-
-                var sorted = elements.entrySet()
-                        .stream()
-                        .sorted(Comparator.comparing(Map.Entry<String, Long>::getValue).reversed()).limit(1);
+                String currentMostFreq = findCombination(tokens[i], tokens, i);
                 if (!result.containsKey(tokens[i])) {
-                    result.put(tokens[i], sorted.toList().get(0).getKey());
+                    result.put(tokens[i], currentMostFreq);
                 }
             }
 
