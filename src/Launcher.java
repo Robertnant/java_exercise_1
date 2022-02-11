@@ -8,64 +8,29 @@ import java.util.stream.Stream;
 
 public class Launcher {
     public static void main(String[] args) {
-        System.out.println("Welcome people!");
         Scanner scanner = new Scanner(System.in);
+        System.out.println("Welcome people!");
+
+        // List of different available commands
+        List<Command> commands = List.of(new Quit(), new Freq(), new Fibo());
 
         while (true) {
+            // Get command from user and find in available commands list
             String input = scanner.nextLine();
 
-            switch (input) {
-                case "quit":
-                    System.out.println("See you next time!");
-                    return;
-                case "freq":
-                    System.out.println("Freq: Enter a file path");
-                    input = scanner.nextLine();
-
-                    try {
-                        String content = Files.readString(Paths.get(input)).toLowerCase(Locale.ROOT);
-                        String[] tokens = content.split(" ");
-                        Map<String, Long> elements = Arrays.stream(tokens)
-                                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
-
-                        var result = elements.entrySet()
-                                .stream()
-                                .sorted(Comparator.comparing(Map.Entry<String, Long>::getValue).reversed()).limit(3);
-                        var resultArray = result.toList();
-                        for (int i = 0; i < resultArray.size() - 1; i++) {
-                            System.out.print(resultArray.get(i).getKey() + " ");
-                        }
-                        System.out.println(resultArray.get(resultArray.size() - 1).getKey());
-                    }
-                    catch (IOException e) {
-                        System.out.println("Unreadable file: ");
-                        e.printStackTrace();
+            int i;
+            for (i = 0; i < commands.size(); i++) {
+                Command command = commands.get(i);
+                if (input.equals(command.name())) {
+                    if (command.run(scanner)) {
+                        return;
                     }
                     break;
-                case "fibo":
-                    System.out.println("Fibonacci: Enter a number");
-                    int number = scanner.nextInt();
+                }
+            }
 
-                    // Skip new line not consumed by nextInt method in scanner.
-                    scanner.nextLine();
-
-                    if (number == 0) {
-                        System.out.println(number);
-                        break;
-                    }
-
-                    int f0 = 0, f1 = 1, f2 = 0;
-
-                    for (int i = 0; i < number - 1; i++) {
-                        f2 = f0 + f1;
-                        f0 = f1;
-                        f1 = f2;
-                    }
-
-                    System.out.println(f1);
-                    break;
-                default:
-                    System.out.println("Unknown command");
+            if (i == commands.size()) {
+                System.out.println("Unknown command");
             }
         }
     }
