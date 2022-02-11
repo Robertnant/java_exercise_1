@@ -52,6 +52,7 @@ public class Predict implements Command {
             System.out.println("Now enter a word contained in the file:");
             input = scanner.nextLine().toLowerCase(Locale.ROOT);
 
+            System.out.print(input + " ");
             if (result.containsKey(input)) {
                 String next = result.get(input);
                 int i = 0;
