@@ -1,4 +1,13 @@
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Map;
 import java.util.Scanner;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Launcher {
     public static void main(String[] args) {
@@ -10,10 +19,33 @@ public class Launcher {
 
             switch (input) {
                 case "quit":
+                    System.out.println("See you next time!");
                     return;
+                case "freq":
+                    System.out.println("Freq: Enter a file path");
+                    input = scanner.nextLine();
+
+                    try {
+                        String content = Files.readString(Paths.get(input));
+                        String[] tokens = content.split(" ");
+                        Map<String, Long> elements = Arrays.stream(tokens)
+                                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+                        var result = elements.entrySet()
+                                .stream()
+                                .sorted(Comparator.comparing(Map.Entry<String, Long>::getValue)).limit(3);
+                        result.forEach(element -> System.out.println(element.getKey()));
+                    }
+                    catch (IOException e) {
+                        System.out.println("Unreadable file: ");
+                        e.printStackTrace();
+                    }
+                    break;
                 case "fibo":
                     System.out.println("Fibonacci: Enter a number");
                     int number = scanner.nextInt();
+
+                    // Skip new line not consumed by nextInt method in scanner.
                     scanner.nextLine();
 
                     if (number == 0) {
