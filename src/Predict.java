@@ -29,7 +29,9 @@ public class Predict implements Command {
                 var sorted = elements.entrySet()
                         .stream()
                         .sorted(Comparator.comparing(Map.Entry<String, Long>::getValue).reversed()).limit(1);
-                result.put(tokens[i], sorted.toList().get(0).getKey());
+                if (!result.containsKey(tokens[i])) {
+                    result.put(tokens[i], sorted.toList().get(0).getKey());
+                }
             }
 
             System.out.println("Now enter a word contained in the file:");
