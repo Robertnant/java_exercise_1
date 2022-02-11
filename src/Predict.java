@@ -33,7 +33,7 @@ public class Predict implements Command {
             }
 
             System.out.println("Now enter a word contained in the file:");
-            input = scanner.nextLine();
+            input = scanner.nextLine().toLowerCase(Locale.ROOT);
 
             if (result.containsKey(input)) {
                 String next = result.get(input);
@@ -43,6 +43,7 @@ public class Predict implements Command {
                     next = result.get(next);
                     i++;
                 }
+
                 System.out.println(next);
             }
             else {
